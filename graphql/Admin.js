@@ -107,6 +107,7 @@ enum PORTAL_ACCESS_TYPE{
     }
 
     type Mutation{
+        inviteAdminBySuperAdmin(input:CreateAdminInput):AdminMutationResponse
         inviteAdmin(input:CreateAdminInput):AdminMutationResponse
         updateAdmin(input:UpdateAdminInput):AdminMutationResponse
         revokeAdmin(input:RevokeAdminInput):AdminMutationResponse
@@ -172,6 +173,29 @@ const adminResolvers = {
         }
     },
     Mutation:{
+        inviteAdminBySuperAdmin: async(_,{input})=>{
+            input.invitedBy = 0
+            const [admin, created] = await Admin.findOrCreate({where:{email:input.email}, defaults:input})
+            if(created){
+                const token = jwt.sign({id:admin.id}, process.env.JWT_SECRET_KEY)
+                await Token.create({token,adminId:admin.id})
+                // send token with other info message broker to notification service
+                redis.publish("messaging",JSON.stringify({
+                    ...admin,
+                    token,
+                    operation:"account_creation"
+                }))
+                return{
+                    message:"Admin has been invited",
+                    status:true,
+                    admin
+                }
+            }
+            return{
+                message:"Account with email address already exist",
+                status:false
+            }
+        },
         inviteAdmin: async(_,{input},{user})=>{
             if(user?.role !== "SUPER" || user?.role !== "ADMIN"){
                 return{
