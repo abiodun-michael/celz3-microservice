@@ -5,7 +5,7 @@ const Activity = require("../database/Activities")
 
 const zoneTypes = gql`
 
-    extend type ZoneMutationResponse{
+    type ZoneMutationResponse{
         message:String
         status:Boolean
         zone:Zone

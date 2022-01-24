@@ -6,7 +6,7 @@ const Activity = require("../database/Activities")
 
 const groupTypes = gql`
 
-    extend type GroupMutationResponse{
+    type GroupMutationResponse{
         message:String
         status:Boolean
         group:Group

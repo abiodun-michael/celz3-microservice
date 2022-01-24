@@ -13,7 +13,7 @@ enum CELL_TYPE{
     ONLINE
 }
 
-    extend type CellMutationResponse{
+    type CellMutationResponse{
         message:String
         status:Boolean
         cell:Cell

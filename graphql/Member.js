@@ -47,7 +47,7 @@ const memberTypes = gql`
         GRADUATE
     }
 
-    extend type MemberMutationResponse{
+    type MemberMutationResponse{
         message:String
         status:Boolean
         member:Member

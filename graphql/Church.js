@@ -15,7 +15,7 @@ enum CHURCH_TYPE{
     ONLINE
 }
 
-    extend type ChurchMutationResponse{
+    type ChurchMutationResponse{
         message:String
         status:Boolean
         church:Church
