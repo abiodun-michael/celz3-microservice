@@ -1,0 +1,336 @@
+const {gql} = require('apollo-server')
+const Admin = require('../database/Admin')
+const Token = require('../database/Token')
+const RevocationNote = require('../database/RevocationNote')
+const jwt = require('jsonwebtoken')
+const redis = require('../util/redisConnection')
+const bcrypt = require('bcrypt')
+const { v4: uuidv4 } = require('uuid')
+
+const adminTypes = gql`
+
+enum PERMISSION_TYPE{
+    SUPER
+    CHURCH_MINISTRY
+    CELL_MINISTRY
+    FINANCE
+    PARTNERSHIP
+    MEDIA
+    FOUNDATION_SCHOOL
+}
+
+enum PORTAL_ACCESS_TYPE{
+    SUPER
+    ZONAL
+    GROUP
+    CHURCH
+    CELL
+    }
+
+    enum ROLE_TYPE{
+        SUPER
+        ADMIN
+        EDITOR
+        VIEWER
+    }
+
+    type AdminMutationResponse{
+        message:String
+        status:Boolean
+        admin:Admin
+        token:String
+    }
+
+    type Admin{
+        id:Int
+        fullName:String
+        phone:String
+        email:String
+        profile:String
+        portalAccess:PORTAL_ACCESS_TYPE
+        permissions:PERMISSION_TYPE
+        role:ROLE_TYPE
+        status:Boolean
+        lastSeen:String
+        churchId:Int
+        groupId:Int
+        cellId:Int
+    }
+
+
+    input CreateAdminInput{
+        fullName:String!
+        phone:String!
+        email:String!
+        profileId:Int
+        churchId:Int
+        groupId:Int
+        cellId:Int
+        portalAccess:PORTAL_ACCESS_TYPE!
+        permissions:PERMISSION_TYPE!
+        role:ROLE_TYPE!
+    }
+
+    
+    input UpdateAdminInput{
+        id:Int!
+        fullName:String!
+        phone:String!
+        email:String!
+        profileId:Int
+        churchId:Int
+        groupId:Int
+        cellId:Int
+        portalAccess:PORTAL_ACCESS_TYPE!
+        permissions:PERMISSION_TYPE!
+        role:ROLE_TYPE!
+    }
+
+
+    input LoginAdminInput{
+        email:String!
+        password:String!
+    }
+
+    input RevokeAdminInput{
+        id:String!
+        reason:String!
+    }
+
+
+    type Query{
+        getAllAdmin:[Admin]
+        getAdminByChurchId(id:Int!):[Admin]
+        getAdminByGroupId(id:Int!):[Admin]
+        getAdminByCellId(id:Int!):[Admin]
+        getMyProfile:Admin
+    }
+
+    type Mutation{
+        inviteAdmin(input:CreateAdminInput):AdminMutationResponse
+        updateAdmin(input:UpdateAdminInput):AdminMutationResponse
+        revokeAdmin(input:RevokeAdminInput):AdminMutationResponse
+        resetAdminPassword(id:Int!):AdminMutationResponse
+        loginAdmin(input:LoginAdminInput!):AdminMutationResponse
+        updateMyProfile(input:UpdateAdminInput):AdminMutationResponse
+    }
+`
+
+
+const adminResolvers = {
+
+    Query:{
+        getMyProfile: async(_,__,{user})=>{
+            if(!user){
+                return{
+                    message:"Access Denied! You are not authorized to perform this operation",
+                    status:false
+                }
+            }
+
+            return await Admin.findOne({where:{id:user.id}})
+        },
+        getAllAdmin: async(_,__,{user})=>{
+            if(!user || user.portalAccess !== "ZONE" || user.portalAccess !== "SUPER"){
+                return{
+                    message:"Access Denied! You are not authorized to perform this operation",
+                    status:false
+                }
+            }
+
+            return await Admin.findAll({where:{portalAccess:"ZONE"}})
+        },
+        getAdminByChurchId: async(_,__,{user})=>{
+            if(!user){
+                return{
+                    message:"Access Denied! You are not authorized to perform this operation",
+                    status:false
+                }
+            }
+
+            return await Admin.findAll({where:{churchId:id}})
+        },
+        getAdminByGroupId: async(_,__,{user})=>{
+            if(!user){
+                return{
+                    message:"Access Denied! You are not authorized to perform this operation",
+                    status:false
+                }
+            }
+
+            return await Admin.findAll({where:{groupId:id}})
+        },
+        getAdminByCellId: async(_,__,{user})=>{
+            if(!user){
+                return{
+                    message:"Access Denied! You are not authorized to perform this operation",
+                    status:false
+                }
+            }
+
+            return await Admin.findAll({where:{cellId:id}})
+        }
+    },
+    Mutation:{
+        inviteAdmin: async(_,{input},{user})=>{
+            if(user?.role !== "SUPER" || user?.role !== "ADMIN"){
+                return{
+                    message:"Access Denied! You are not authorized to perform this operation",
+                    status:false
+                }
+            }
+            input.invitedBy = user.id
+            const [admin, created] = await Admin.findOrCreate({where:{email:input.email}, defaults:input})
+            if(created){
+                const token = jwt.sign({id:admin.id}, process.env.JWT_SECRET_KEY)
+                await Token.create({token,adminId:admin.id})
+                // send token with other info message broker to notification service
+                redis.publish("messaging",JSON.stringify({
+                    ...admin,
+                    token,
+                    operation:"account_creation"
+                }))
+                return{
+                    message:"Admin has been invited",
+                    status:true,
+                    admin
+                }
+            }
+            return{
+                message:"Account with email address already exist",
+                status:false
+            }
+        },
+        updateAdmin: async(_,{input},{user})=>{
+            if(user?.role !== "SUPER" || user?.role !== "ADMIN"){
+                return{
+                    message:"Access Denied! You are not authorized to perform this operation",
+                    status:false
+                }
+            }
+
+            const isUpdated = await Admin.update(input,{where:{id:input.id}})
+            if(isUpdated){
+                return{
+                    message:"Admin info updated",
+                    status:true,
+                    admin:input
+                }
+            }
+            return{
+                message:"An error occured during this operation",
+                status:false
+            }
+        },
+        updateMyProfile: async(_,{input},{user})=>{
+            if(!user){
+                return{
+                    message:"Access Denied! You are not authorized to perform this operation",
+                    status:false
+                }
+            }
+
+            const isUpdated = await Admin.update(input,{where:{id:user.id}})
+            if(isUpdated){
+                return{
+                    message:"Profile info updated",
+                    status:true,
+                    admin:input
+                }
+            }
+            return{
+                message:"An error occured during this operation",
+                status:false
+            }
+        },
+        revokeAdmin: async(_,{input},{user})=>{
+
+            const admin = await Admin.findOne({where:{id:input.id}})
+            if(admin){
+                await RevocationNote.create({...input, invokedBy:user.id})
+                await Admin.update({status:false},{where:{id:input.id}})
+                redis.publish("messaging",JSON.stringify({
+                    ...admin,
+                    operation:"account_revocation"
+                }))
+                return{
+                    message:"Account has been revoked",
+                    status:true
+                }
+            }
+            return{
+                message:"Invalid account",
+                status:false
+            }
+        },
+        resetAdminPassword: async(_,{id},{user})=>{
+            if(user?.role !== "SUPER" || user?.role !== "ADMIN"){
+                return{
+                    message:"Access Denied! You are not authorized to perform this operation",
+                    status:false
+                }
+            }
+
+            const admin = await Admin.findOne({where:{id}})
+
+            if(admin){
+                await Admin.update({password:""},{where:{id}})
+                const token = jwt.sign({id:admin.id}, process.env.JWT_SECRET_KEY)
+                await Token.create({token,adminId:admin.id})
+                redis.publish("messaging",JSON.stringify({
+                    ...admin,
+                    token,
+                    operation:"password_reset"
+                }))
+                return{
+                    message:"Password has been reset and instruction sent to user email",
+                    status:true,
+                    admin
+                }
+            }
+            return{
+                message:"An error occurred",
+                status:false
+            }
+        },
+        loginAdmin: async(_,{input})=>{
+
+            const admin = await Admin.findOne({where:{email:input.email}})
+            if(admin){
+                if(!admin.status)return{message:"Your account is revoked. Contact the support team", status:false}
+                if(admin.password && admin.isAcceptInvite){
+                    const isTrue = bcrypt.compareSync(input.password, admin.password)
+                    if(isTrue){
+                        await Admin.update({lastSeen:new Date()},{where:{email:input.email}})
+                        const uuid = admin.id+'_'+uuidv4()
+                        return{
+                            message:"Authentication successful",
+                            status:true,
+                            admin,
+                            token:JSON.stringify({
+                               ...admin,
+                               uuid 
+                            })
+                        }
+                    }
+                    return{
+                        message:"Invalid email and password combination",
+                        return:false
+                    }
+                }
+                return{
+                    message:"You have not set your account password",
+                    return:false
+                }
+            }
+            return{
+                message:"Invalid email and password combination",
+                return:false
+            }
+            
+            
+        },
+    }
+}
+
+module.exports = {adminTypes, adminResolvers}
