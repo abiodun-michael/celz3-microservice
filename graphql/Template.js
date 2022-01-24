@@ -9,6 +9,12 @@ const templateTypes = gql`
         CUSTOM
     }
 
+    enum SERVICE_TYPE{
+        ADMIN_ONBOARDING
+        ADMIN_PASSWORD_RESET
+        ADMIN_ACCOUNT_REVOKE
+    }
+
     enum PORTAL_TYPE{
         SUPER
         CHURCH_MINISTRY
