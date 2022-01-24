@@ -178,7 +178,7 @@ const adminResolvers = {
             const [admin, created] = await Admin.findOrCreate({where:{email:input.email}, defaults:input})
             if(created){
                 const token = jwt.sign({id:admin.id}, process.env.JWT_SECRET_KEY)
-                await Token.create({token,adminId:admin.id})
+                await Token.create({ott:token,adminId:admin.id})
                 // send token with other info message broker to notification service
                 redis.publish("messaging",JSON.stringify({
                     ...admin,
@@ -207,7 +207,7 @@ const adminResolvers = {
             const [admin, created] = await Admin.findOrCreate({where:{email:input.email}, defaults:input})
             if(created){
                 const token = jwt.sign({id:admin.id}, process.env.JWT_SECRET_KEY)
-                await Token.create({token,adminId:admin.id})
+                await Token.create({ott:token,adminId:admin.id})
                 // send token with other info message broker to notification service
                 redis.publish("messaging",JSON.stringify({
                     ...admin,
