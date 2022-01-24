@@ -25,7 +25,7 @@ const templateTypes = gql`
         FOUNDATION_SCHOOL
     }
 
-    extend type TemplateMutationResponse{
+    type TemplateMutationResponse{
         message:String
         status:Boolean
         template:Template
