@@ -35,19 +35,20 @@ const templateTypes = gql`
         id:Int
         subject:String
         message:String
+        srviceType:SERVICE_TYPE
     }
 
     input CreateTemplateInput{
         subject:String!
         message:String!
-        type:TEMPLATE_TYPE!
         portal:PORTAL_TYPE!
+        serviceType:SERVICE_TYPE!
     }
     input UpdateTemplateInput{
         id:Int!
         subject:String!
         message:String!
-        type:TEMPLATE_TYPE!
+        serviceType:SERVICE_TYPE!
         portal:PORTAL_TYPE!
     }
 
@@ -113,7 +114,53 @@ const templateResolvers = {
             return await Template.findOne({where:{id}})
 
         }
-    }
+    },
+	
+	Mutation:{
+		createTemplate: async(_,{input},{user})=>{
+			 if(!user){
+                return{
+                    message:"Access Denied! You are not authorized to access this resource",
+                    status:false
+                }
+            }
+
+            const [template, created] = await Template.findOrCreate({where:{serviceType:input.serviceType}, defaults:input})
+			if(created){
+                return{
+                    message:"Template is saved",
+                    status:true,
+                    template
+                }
+            }
+            return{
+                message:"Template already exist for type",
+                status:false
+            }
+		},
+
+        updateTemplate: async(_,{input},{user})=>{
+            if(!user){
+                return{
+                    message:"Access Denied! You are not authorized to access this resource",
+                    status:false
+                }
+            }
+
+            const [updated] = await Template.update(input,{where:{id:input.id}})
+            if(updated){
+                return{
+                    message:"Template update",
+                    status:true
+                }
+            }
+            return{
+                message:"An error occured",
+                status:false
+            }
+        }
+		
+	}
 }
 
 module.exports = {templateTypes, templateResolvers}
