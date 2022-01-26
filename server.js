@@ -41,6 +41,7 @@ const startApolloServer = async()=>{
 
 
 const gateway = new ApolloGateway({
+  subscription:false,
   buildService({ url }) {
     return new RemoteGraphQLDataSource({
       url,
