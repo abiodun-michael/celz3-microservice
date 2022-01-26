@@ -50,8 +50,9 @@ const gateway = new ApolloGateway({
       async didReceiveResponse({ response, request, context }) {
       
         const uuid = request.http.headers.get('uuid');
+     
+           if(loginAdmin && loginAdmin.status){
 
-           if(uuid){
               context.uuid
           }
         return response;
