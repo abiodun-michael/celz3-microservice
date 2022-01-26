@@ -49,11 +49,9 @@ const gateway = new ApolloGateway({
       },
       async didReceiveResponse({ response, request, context }) {
       
-          const {loginAdmin} = response?.data || {}
-     
-          if(loginAdmin && loginAdmin.status){
-            const uuid = loginAdmin?.admin?.id+"."+uuidv4()
-              redis.set(uuid, JSON.stringify(loginAdmin?.admin))
+        const uuid = request.http.headers.get('uuid');
+
+           if(uuid){
               context.uuid
           }
         return response;
