@@ -30,13 +30,13 @@ const handleSend = async(to, from, subject, message)=>{
     }
 
 const adminOnboarding = async(payload)=>{
- 
+ const {dataValues, token} = payload
  const template = await Template.findOne({where:{serviceType:"ADMIN_ONBOARDING"}})
-
+  console.log(token)
  if(template){
-    payload.link = process.env.BASE_URL+'/verify/'+payload?.token
-    const message = replaceStr(template.message,payload)
-    handleSend(payload.email,{email:"noreply@sarlexinconcept.com", name:"Sarlexin Concept"},template.subject,message)
+    payload.link = process.env.BASE_URL+'/verify/'+token
+    const message = replaceStr(template.message,dataValues)
+    handleSend(dataValues.email,{email:"noreply@sarlexinconcept.com", name:"Celz3"},template.subject,message)
  }
 
 }
