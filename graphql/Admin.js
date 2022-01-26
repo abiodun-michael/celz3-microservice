@@ -137,7 +137,7 @@ const adminResolvers = {
             return await Admin.findOne({where:{id:user.id}})
         },
         getAllAdmin: async(_,__,{user})=>{
-            if(!user || user.portalAccess !== "ZONE" || user.portalAccess !== "SUPER"){
+            if(!user || ["SUPER","ZONAL"].includes(user.portalAccess)){
                 return{
                     message:"Access Denied! You are not authorized to perform this operation",
                     status:false
