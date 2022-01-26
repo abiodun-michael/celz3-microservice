@@ -102,7 +102,7 @@ enum PORTAL_ACCESS_TYPE{
         password:String!
     }
 
-    type Query{
+    extend type Query{
         getAllAdmin:[Admin]
         getAdminByChurchId(id:Int!):[Admin]
         getAdminByGroupId(id:Int!):[Admin]
@@ -110,7 +110,7 @@ enum PORTAL_ACCESS_TYPE{
         getMyProfile:Admin
     }
 
-    type Mutation{
+   extend type Mutation{
         inviteAdminBySuperAdmin(input:CreateAdminInput):AdminMutationResponse
         inviteAdmin(input:CreateAdminInput):AdminMutationResponse
         updateAdmin(input:UpdateAdminInput):AdminMutationResponse
@@ -389,6 +389,8 @@ const adminResolvers = {
         },
 
         setPassword: async(_,{input})=>{
+            const salt = bcrypt.genSaltSync(saltRounds);
+            input.password = bcrypt.hashSync(input.password, salt);
             const [updated] = await Admin.update({password:input.password}, {where:{id:input.id, isAcceptInvite:true, status:true}})
              if(updated){
                  return{
