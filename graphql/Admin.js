@@ -97,6 +97,10 @@ enum PORTAL_ACCESS_TYPE{
         reason:String!
     }
 
+    input AdminSetPasswordInput{
+        id:Int!
+        password:String!
+    }
 
     type Query{
         getAllAdmin:[Admin]
@@ -114,6 +118,8 @@ enum PORTAL_ACCESS_TYPE{
         resetAdminPassword(id:Int!):AdminMutationResponse
         loginAdmin(input:LoginAdminInput!):AdminMutationResponse
         updateMyProfile(input:UpdateAdminInput):AdminMutationResponse
+        verifyEmail(token:String!):AdminMutationResponse
+        setPassword(input:AdminSetPasswordInput!):AdminMutationResponse
     }
 `
 
@@ -170,7 +176,8 @@ const adminResolvers = {
             }
 
             return await Admin.findAll({where:{cellId:id}})
-        }
+        },
+		
     },
     Mutation:{
         inviteAdminBySuperAdmin: async(_,{input})=>{
@@ -354,6 +361,47 @@ const adminResolvers = {
             
             
         },
+
+        verifyEmail: async(_,{token})=>{
+            const myToken = await Token.findOne({where:{ott:token}})
+
+            if(myToken){
+                const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY)
+                const [admin] = await Admin.update({isAcceptInvite:true, status:true},{where:{id:decodedToken.id}})
+                if(admin){
+                    await Token.destroy({where:{ott:token}})
+                    return{
+                        message:"Account verified, now set your password",
+                        status:true,
+                        admin:{id:decodedToken.id}
+                    }
+                }
+                return{
+                    message:"Invalid verification link",
+                    status:false
+                }
+            }
+
+            return{
+                message:"Invalid verification link",
+                status:false
+            }
+        },
+
+        setPassword: async(_,{input})=>{
+            const [updated] = await Admin.update({password:input.password}, {where:{id:input.id, isAcceptInvite:true, status:true}})
+             if(updated){
+                 return{
+                     message:"Password is set. Proceed to login",
+                     status:true
+                 }
+             }
+
+             return{
+                message:"Invalid operations",
+                status:false
+            }
+        }
     }
 }
 
