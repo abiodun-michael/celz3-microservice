@@ -61,6 +61,7 @@ const templateTypes = gql`
     }
 
     extend type Mutation{
+        createTemplateBySuperAdmin(input:CreateTemplateInput!):TemplateMutationResponse
         createTemplate(input:CreateTemplateInput!):TemplateMutationResponse
         updateTemplate(input:UpdateTemplateInput!):TemplateMutationResponse
         deleteTemplate(id:Int!):TemplateMutationResponse
@@ -117,6 +118,21 @@ const templateResolvers = {
     },
 	
 	Mutation:{
+		createTemplateBySuperAdmin: async(_,{input},{user})=>{
+
+            const [template, created] = await Template.findOrCreate({where:{serviceType:input.serviceType}, defaults:input})
+			if(created){
+                return{
+                    message:"Template is saved",
+                    status:true,
+                    template
+                }
+            }
+            return{
+                message:"Template already exist for type",
+                status:false
+            }
+		},
 		createTemplate: async(_,{input},{user})=>{
 			 if(!user){
                 return{
