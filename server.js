@@ -17,6 +17,7 @@ const PORT = process.env.PORT || 4001
      
        if(req.headers?.user && req.headers?.user != 'undefined'){
         const user = JSON.parse(req.headers.user)
+        console.log(user)
          return{user,req,res}
        }else{
         return{req,res}
