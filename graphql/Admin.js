@@ -146,7 +146,7 @@ const adminResolvers = {
 
             return await Admin.findAll({where:{portalAccess:"ZONAL"}})
         },
-        getAdminByChurchId: async(_,__,{user})=>{
+        getAdminByChurchId: async(_,{id},{user})=>{
             if(!user){
                 return{
                     message:"Access Denied! You are not authorized to perform this operation",
@@ -156,7 +156,7 @@ const adminResolvers = {
 
             return await Admin.findAll({where:{churchId:id}})
         },
-        getAdminByGroupId: async(_,__,{user})=>{
+        getAdminByGroupId: async(_,{id},{user})=>{
             if(!user){
                 return{
                     message:"Access Denied! You are not authorized to perform this operation",
@@ -166,7 +166,7 @@ const adminResolvers = {
 
             return await Admin.findAll({where:{groupId:id}})
         },
-        getAdminByCellId: async(_,__,{user})=>{
+        getAdminByCellId: async(_,{id},{user})=>{
             if(!user){
                 return{
                     message:"Access Denied! You are not authorized to perform this operation",
