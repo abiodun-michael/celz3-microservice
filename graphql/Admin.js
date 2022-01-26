@@ -101,7 +101,7 @@ enum PORTAL_ACCESS_TYPE{
         password:String!
     }
 
-    extend type Query{
+    type Query{
         getAllAdmin:[Admin]
         getAdminByChurchId(id:Int!):[Admin]
         getAdminByGroupId(id:Int!):[Admin]
@@ -109,7 +109,7 @@ enum PORTAL_ACCESS_TYPE{
         getMyProfile:Admin
     }
 
-   extend type Mutation{
+   type Mutation{
         inviteAdminBySuperAdmin(input:CreateAdminInput):AdminMutationResponse
         inviteAdmin(input:CreateAdminInput):AdminMutationResponse
         updateAdmin(input:UpdateAdminInput):AdminMutationResponse
