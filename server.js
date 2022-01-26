@@ -49,11 +49,10 @@ const gateway = new ApolloGateway({
       },
       async didReceiveResponse({ response, request, context }) {
       
-        const uuid = request.http.headers.get('uuid');
-     
-           if(loginAdmin && loginAdmin.status){
-
-              context.uuid
+        const uuid = response.http.headers.get('uuid');
+    
+           if(uuid){
+              context.uuid = uuid
           }
         return response;
       }
@@ -69,14 +68,15 @@ const server = new ApolloServer({
     if(lz3_uuid){
       user = await redis.get(lz3_uuid)
     }
-    return { user }
+    return { user,res }
   },
   plugins: [
     {
       requestDidStart() {
         return {
-          willSendResponse({context}) {
+          willSendResponse({context, res}) {
             if(context.uuid){
+              console.log(context)
               context.res.cookie("lz3_uuid",context.uuid,{sameSite:'none', secure:true, httpOnly:true})
             }
           }
