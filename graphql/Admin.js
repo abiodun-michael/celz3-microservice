@@ -144,7 +144,7 @@ const adminResolvers = {
                 }
             }
 
-            return await Admin.findAll({where:{portalAccess:"ZONE"}})
+            return await Admin.findAll({where:{portalAccess:"ZONAL"}})
         },
         getAdminByChurchId: async(_,__,{user})=>{
             if(!user){
