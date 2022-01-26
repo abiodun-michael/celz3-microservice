@@ -38,7 +38,6 @@ enum PORTAL_ACCESS_TYPE{
         message:String
         status:Boolean
         admin:Admin
-        token:String
     }
 
     type Admin{
@@ -324,7 +323,7 @@ const adminResolvers = {
                 status:false
             }
         },
-        loginAdmin: async(_,{input})=>{
+        loginAdmin: async(_,{input},{res})=>{
 
             const admin = await Admin.findOne({where:{email:input.email}})
             if(admin){
@@ -334,14 +333,12 @@ const adminResolvers = {
                     if(isTrue){
                         await Admin.update({lastSeen:new Date()},{where:{email:input.email}})
                         const uuid = admin.id+'_'+uuidv4()
+                        redis.set(uuid,JSON.stringify(admin))
+                        res.header("uuid", uuid)
                         return{
                             message:"Authentication successful",
                             status:true,
-                            admin,
-                            token:JSON.stringify({
-                               ...admin,
-                               uuid 
-                            })
+                            admin
                         }
                     }
                     return{
