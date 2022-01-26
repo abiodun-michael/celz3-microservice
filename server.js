@@ -77,7 +77,6 @@ const server = new ApolloServer({
         return {
           willSendResponse({context, res}) {
             if(context.uuid){
-              console.log(context)
               context.res.cookie("lz3_uuid",context.uuid,{sameSite:'none', secure:true, httpOnly:true})
             }
           }
