@@ -389,7 +389,7 @@ const adminResolvers = {
         },
 
         setPassword: async(_,{input})=>{
-            const salt = bcrypt.genSaltSync(saltRounds);
+            const salt = bcrypt.genSaltSync(10);
             input.password = bcrypt.hashSync(input.password, salt);
             const [updated] = await Admin.update({password:input.password}, {where:{id:input.id, isAcceptInvite:true, status:true}})
              if(updated){
