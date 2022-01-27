@@ -21,6 +21,7 @@ const groupTypes = gql`
         pastor:Member
         totalCell:Int
         totalMember:Int
+        totalChurch:Int
         zone:Zone
         desc:String
     }
@@ -71,8 +72,9 @@ const groupResolvers = {
         zone:async({zoneId})=>{
             return await Zone.findOne({where:{id:zoneId}})
         },
-        totalMember:async({id})=>await Member.count({where:{churchId:id}}),
-        totalCell:async({id})=>await Cell.count({where:{churchId:id}}),
+        totalMember:async({id})=>await Member.count({where:{groupId:id}}),
+        totalCell:async({id})=>await Cell.count({where:{groupId:id}}),
+        totalChurch:async({id})=>await Church.count({where:{groupId:id}}),
 
     },
     Mutation:{
