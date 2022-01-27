@@ -2,7 +2,9 @@ const {gql} = require("apollo-server")
 const Zone = require("../database/Zone")
 const Group = require("../database/Group")
 const Activity = require("../database/Activities")
-
+const Cell = require("../database/Cell")
+const Member = require("../database/Member")
+const Church = require("../database/Church")
 
 const groupTypes = gql`
 
@@ -17,6 +19,8 @@ const groupTypes = gql`
         name:String
         logo:String
         pastor:Member
+        totalCell:Int
+        totalMember:Int
         zone:Zone
         desc:String
     }
@@ -66,7 +70,10 @@ const groupResolvers = {
     Group:{
         zone:async({zoneId})=>{
             return await Zone.findOne({where:{id:zoneId}})
-        }
+        },
+        totalMember:async({id})=>await Member.count({where:{churchId:id}}),
+        totalCell:async({id})=>await Cell.count({where:{churchId:id}}),
+
     },
     Mutation:{
         createGroup: async(_,{input},{user})=>{

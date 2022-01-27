@@ -3,6 +3,8 @@ const Zone = require("../database/Zone")
 const Group = require("../database/Group")
 const Church = require("../database/Church")
 const Activity = require("../database/Activities")
+const Cell = require("../database/Cell")
+const Member = require("../database/Member")
 
 
 const churchTypes = gql`
@@ -33,6 +35,8 @@ enum CHURCH_TYPE{
         meetingTime:String
         latitude:String
         longitude:String
+        totalMember:Int
+        totalCell:Int
         type:String
         logo:String
         pastor:Member
@@ -108,6 +112,9 @@ const churchResolvers = {
         group:async({groupId})=>{
             return await Group.findOne({where:{id:groupId}})
         },
+        totalMember:async({id})=>await Member.count({where:{churchId:id}}),
+        totalCell:async({id})=>await Cell.count({where:{churchId:id}}),
+
     },
     Mutation:{
         createChurch: async(_,{input},{user})=>{
