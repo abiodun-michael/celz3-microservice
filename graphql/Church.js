@@ -22,7 +22,7 @@ enum CHURCH_TYPE{
     }
 
     type ChurchList{
-        chuch:Church,
+        church:[Church],
         group:Group
     }
 
@@ -72,7 +72,7 @@ enum CHURCH_TYPE{
 
 
     extend type Query{
-        getAllChurchByGroupId(id:Int!):[ChurchList]
+        getAllChurchByGroupId(id:Int!):ChurchList
         getChurchById(id:Int!):Church
     }
 
@@ -88,7 +88,10 @@ const churchResolvers = {
     Query:{
         getAllChurchByGroupId: async(_,{id},{user})=>{
            if(!user) return{message:"Access Denied! You are not authorized to view this resource", status:false}
-           return await Church.findAll({where:{groupId:id}})
+           const ch = await Church.findAll({where:{groupId:id}})
+           return{
+               church:ch
+           }
        },
        getChurchById: async(_,{id},{user})=>{
            if(!user) return{message:"Access Denied! You are not authorized to view this resource", status:false}
