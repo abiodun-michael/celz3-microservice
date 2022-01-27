@@ -87,10 +87,12 @@ enum CHURCH_TYPE{
 const churchResolvers = {
     Query:{
         getAllChurchByGroupId: async(_,{id},{user})=>{
-           if(!user) return{message:"Access Denied! You are not authorized to view this resource", status:false}
+        //    if(!user) return{message:"Access Denied! You are not authorized to view this resource", status:false}
            const ch = await Church.findAll({where:{groupId:id}})
+           const gr = await Group.findOne({where:{id}})
            return{
-               church:ch
+               church:ch,
+               group:gr
            }
        },
        getChurchById: async(_,{id},{user})=>{
@@ -98,9 +100,7 @@ const churchResolvers = {
            return await Church.findOne({where:{id}})
        }
     },
-    ChurchList:{
-        group: async(_,{id})=>await Group.findOne({where:{id}})
-    },
+    
     Church:{
         zone:async({zoneId})=>{
             return await Zone.findOne({where:{id:zoneId}})
