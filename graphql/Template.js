@@ -35,7 +35,9 @@ const templateTypes = gql`
         id:Int
         subject:String
         message:String
-        srviceType:SERVICE_TYPE
+        serviceType:SERVICE_TYPE
+        portal:PORTAL_TYPE
+        type:TEMPLATE_TYPE
     }
 
     input CreateTemplateInput{
