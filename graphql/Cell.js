@@ -4,6 +4,7 @@ const Group = require("../database/Group")
 const Church = require("../database/Church")
 const Cell = require("../database/Cell")
 const Activity = require("../database/Activities")
+const Member = require("../database/Member")
 
 
 const cellTypes = gql`
@@ -17,6 +18,11 @@ enum CELL_TYPE{
         message:String
         status:Boolean
         cell:Cell
+    }
+
+    type CellList{
+        cell:[Cell]
+        church:Church
     }
 
     type Cell{
@@ -33,6 +39,7 @@ enum CELL_TYPE{
         zone:Zone
         group:Group
         church:Church
+        totalMember:Int!
     }
 
     input CreateCellInput{
@@ -68,7 +75,7 @@ enum CELL_TYPE{
 
 
     extend type Query{
-        getAllCellByChurchId(id:Int!):[Cell]
+        getAllCellByChurchId(id:Int!):CellList
         getCellById(id:Int!):Cell
     }
 
@@ -84,7 +91,12 @@ const cellResolvers = {
     Query:{
         getAllCellByChurchId: async(_,{id},{user})=>{
            if(!user) return{message:"Access Denied! You are not authorized to view this resource", status:false}
-           return await Cell.findAll({where:{churchId:id}})
+           const cell = await Cell.findAll({where:{churchId:id}})
+           const church = await Church.findOne({where:{id}})
+           return{
+               cell,
+               church
+           }
        },
        getCellById: async(_,{id},{user})=>{
            if(!user) return{message:"Access Denied! You are not authorized to view this resource", status:false}
@@ -101,6 +113,7 @@ const cellResolvers = {
         church:async({churchId})=>{
             return await Church.findOne({where:{id:churchId}})
         },
+        totalMember: async({id})=>await Member.count({where:{cellId:id}})
     },
     Mutation:{
         createCell: async(_,{input},{user})=>{
