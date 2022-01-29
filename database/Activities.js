@@ -13,6 +13,7 @@ const Activity = Connection.define("activity",{
         type:DataTypes.STRING,
         allowNull:false
     },
+    
     actor:{
         type:DataTypes.INTEGER,
         allowNull:false
