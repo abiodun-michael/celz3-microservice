@@ -7,6 +7,12 @@ const Church = require('./Church')
 
 
 const Member = Connection.define("member",{
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+        defaultValue: 100,
+    },
     firstName:{
         type:DataTypes.STRING,
         allowNull:false

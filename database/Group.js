@@ -4,6 +4,12 @@ const Zone = require('./Zone')
 
 
 const Group = Connection.define("group",{
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+        defaultValue: 100,
+    },
     name:{
         type:DataTypes.STRING,
         allowNull:false
