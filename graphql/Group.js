@@ -14,7 +14,7 @@ const groupTypes = gql`
         group:Group
     }
 
-    type Group{
+    type Group @key(fields:"id"){
         id:Int
         name:String
         logo:String

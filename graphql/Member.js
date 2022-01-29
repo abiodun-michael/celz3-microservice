@@ -53,7 +53,7 @@ const memberTypes = gql`
         member:Member
     }
 
-    type Member{
+    type Member @key(fields:"id"){
         id:Int
         firstName:String
         lastName:String

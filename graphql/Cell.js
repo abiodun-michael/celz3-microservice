@@ -25,7 +25,7 @@ enum CELL_TYPE{
         church:Church
     }
 
-    type Cell{
+    type Cell @key(fields:"id"){
         id:Int
         name:String
         address:String

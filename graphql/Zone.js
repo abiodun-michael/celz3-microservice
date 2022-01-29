@@ -11,7 +11,7 @@ const zoneTypes = gql`
         zone:Zone
     }
 
-    type Zone{
+    type Zone @key(fields:"id"){
         id:Int
         name:String
         logo:String

@@ -28,7 +28,7 @@ enum CHURCH_TYPE{
         group:Group
     }
 
-    type Church{
+    type Church @key(fields:"id"){
         id:Int
         name:String
         address:String
