@@ -4,7 +4,7 @@ const Group = require("../database/Group")
 const Church = require("../database/Church")
 const Cell = require("../database/Cell")
 const Member = require("../database/Member")
-
+const Activity = require("../database/Activities")
 
 const memberTypes = gql`
 
