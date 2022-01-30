@@ -17,20 +17,24 @@ const Admin = Connection.define("admin",{
         type:DataTypes.STRING,
         allowNull:false
     },
+    photoUrl:{
+        type:DataTypes.STRING,
+        allowNull:true
+    },
     email:{
         type:DataTypes.STRING,
         allowNull:false
     },
     portalAccess:{
-        type:DataTypes.ENUM("SUPER","ZONAL","GROUP","CHURCH","CELL"),
+        type:DataTypes.ENUM("SYSTEM","ZONAL","GROUP","CHURCH","CELL"),
         allowNull:false
     },
     permissions:{
-        type:DataTypes.ENUM("SUPER","CHURCH_MINISTRY","CELL_MINISTRY","FINANCE","PARTNERSHIP","MEDIA","FOUNDATION_SCHOOL"),
+        type:DataTypes.ENUM("SYSTEM","CHURCH_MINISTRY","CELL_MINISTRY","FINANCE","PARTNERSHIP","MEDIA","FOUNDATION_SCHOOL"),
         allowNull:false
     },
     role:{
-        type:DataTypes.ENUM("SUPER","ADMIN","EDITOR","VIEWER"),
+        type:DataTypes.ENUM("SYSTEM","ADMIN","EDITOR","VIEWER"),
         allowNull:false
     },
     profileId:{
