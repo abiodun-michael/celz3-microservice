@@ -1,10 +1,11 @@
+require("dotenv").config()
 const cloudinary = require('cloudinary').v2
 
 
 cloudinary.config({ 
-    cloud_name: 'codevolution-nigeria', 
-    api_key: '137386517133568', 
-    api_secret: 'QIpac7yylopXi4O8U-FrrFePgrw',
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+    api_key: process.env.CLOUDINARY_API_KEY, 
+    api_secret: process.env.CLOUDINARY_SECRET_KEY,
     secure: true
   });
 
