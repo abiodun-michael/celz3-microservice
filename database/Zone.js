@@ -4,12 +4,12 @@ const Connection = require('./connection')
 
 
 const Zone = Connection.define("zone",{
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-        defaultValue: 100,
-    },
+    // id: {
+    //     type: DataTypes.INTEGER,
+    //     autoIncrement: true,
+    //     primaryKey: true,
+    //     defaultValue: 100,
+    // },
     name:{
         type:DataTypes.STRING,
         allowNull:false

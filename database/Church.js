@@ -5,12 +5,12 @@ const Group = require('./Group')
 
 
 const Church = Connection.define("church",{
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-        defaultValue: 100,
-    },
+    // id: {
+    //     type: DataTypes.INTEGER,
+    //     autoIncrement: true,
+    //     primaryKey: true,
+    //     defaultValue: 100,
+    // },
     name:{
         type:DataTypes.STRING,
         allowNull:false

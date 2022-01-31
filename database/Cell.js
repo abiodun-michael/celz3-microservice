@@ -6,12 +6,12 @@ const Church = require('./Church')
 
 
 const Cell = Connection.define("cell",{
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-        defaultValue: 100,
-    },
+    // id: {
+    //     type: DataTypes.INTEGER,
+    //     autoIncrement: true,
+    //     primaryKey: true,
+    //     defaultValue: 100,
+    // },
     name:{
         type:DataTypes.STRING,
         allowNull:false
