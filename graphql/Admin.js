@@ -13,7 +13,7 @@ const adminTypes = gql`
 scalar Upload
 
 enum PERMISSION_TYPE{
-    SUPER
+    SYSTEM
     CHURCH_MINISTRY
     CELL_MINISTRY
     FINANCE
@@ -23,7 +23,7 @@ enum PERMISSION_TYPE{
 }
 
 enum PORTAL_ACCESS_TYPE{
-    SUPER
+    SYSTEM
     ZONAL
     GROUP
     CHURCH
@@ -31,7 +31,7 @@ enum PORTAL_ACCESS_TYPE{
     }
 
     enum ROLE_TYPE{
-        SUPER
+        SYSTEM
         ADMIN
         EDITOR
         VIEWER
