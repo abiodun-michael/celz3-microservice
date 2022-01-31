@@ -34,7 +34,7 @@ const adminOnboarding = async(payload)=>{
  const template = await Template.findOne({where:{serviceType:"ADMIN_ONBOARDING"}})
   let data = {...dataValues}
  if(template){
-  data.link = process.env.BASE_URL+'/verify/'+token
+  data.link = process.env.BASE_URL+'/auth/verify?token='+token
     const message = replaceStr(template.message,data)
     handleSend(data.email,{email:"noreply@sarlexinconcept.com", name:"Celz3"},template.subject,message)
  }
