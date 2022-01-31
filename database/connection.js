@@ -1,14 +1,8 @@
 require('dotenv').config()
-const Sequelize = require('sequelize-cockroachdb')
+const Sequelize = require('sequelize')
 
 
-const Connection = new Sequelize({
-    host: process.env.DB_HOST,
-    dialect:process.env.DB_DIALECT,
-    port:process.env.DB_PORT,
-    username:process.env.DB_USER,
-    password:process.env.DB_PASSWORD,
-    database:process.env.DB_NAME,
+const Connection = new Sequelize(process.env.DB_URL,{
     pool: {
         max: 5,
         min: 0,
