@@ -4,12 +4,6 @@ const Connection = require('./connection')
 
 
 const Template = Connection.define("template",{
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-        defaultValue: 100,
-    },
     subject:{
         type: DataTypes.STRING,
         allowNull:false
