@@ -4,12 +4,6 @@ const Admin = require("./Admin")
 
 
 const RevocationNote = Connection.define("revocationNote",{
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-        defaultValue: 100,
-    },
     reason:{
         type:DataTypes.STRING,
         allowNull:false

@@ -3,12 +3,6 @@ const {DataTypes} = require('sequelize')
 
 
 const Admin = Connection.define("admin",{
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-        defaultValue: 100,
-    },
     fullName:{
         type:DataTypes.STRING,
         allowNull:false
