@@ -16,7 +16,7 @@ const templateTypes = gql`
     }
 
     enum PORTAL_TYPE{
-        SUPER
+        SYSTEM
         CHURCH_MINISTRY
         CELL_MINISTRY
         FINANCE

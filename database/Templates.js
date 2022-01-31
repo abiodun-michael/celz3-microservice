@@ -18,7 +18,7 @@ const Template = Connection.define("template",{
         defaultValue:"DEFAULT"
     },
     portal:{
-        type:DataTypes.ENUM("CHURCH_MINISTRY","CELL_MINISTRY","FINANCE","PARTNERSHIP","MEDIA","FOUNDATION_SCHOOL"),
+        type:DataTypes.ENUM("SYSTEM","CHURCH_MINISTRY","CELL_MINISTRY","FINANCE","PARTNERSHIP","MEDIA","FOUNDATION_SCHOOL"),
         allowNull:false
     },
     serviceType:{
