@@ -2,7 +2,7 @@ require('dotenv').config()
 const Sequelize = require('sequelize')
 
 
-const Connection = new Sequelize(process.env.DB_URL,{
+const Connection = new Sequelize(process.env.DATABASE_URL,{
     pool: {
         max: 5,
         min: 0,
