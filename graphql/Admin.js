@@ -111,6 +111,7 @@ enum PORTAL_ACCESS_TYPE{
         getAdminByGroupId(id:Int!):[Admin]
         getAdminByCellId(id:Int!):[Admin]
         getMyProfile:Admin
+        verifyEmail(token:String!):AdminMutationResponse
     }
 
    type Mutation{
@@ -122,7 +123,6 @@ enum PORTAL_ACCESS_TYPE{
         resetAdminPassword(id:Int!):AdminMutationResponse
         loginAdmin(input:LoginAdminInput!):AdminMutationResponse
         updateMyProfile(input:UpdateAdminInput):AdminMutationResponse
-        verifyEmail(token:String!):AdminMutationResponse
         setPassword(input:AdminSetPasswordInput!):AdminMutationResponse
     }
 `
@@ -183,7 +183,31 @@ const adminResolvers = {
 
             return await Admin.findAll({where:{cellId:id}})
         },
-		
+		verifyEmail: async(_,{token})=>{
+            const myToken = await Token.findOne({where:{ott:token}})
+
+            if(myToken){
+                const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY)
+                const [admin] = await Admin.update({isAcceptInvite:true, status:true},{where:{id:decodedToken.id}})
+                if(admin){
+                    await Token.destroy({where:{ott:token}})
+                    return{
+                        message:"Account verified, now set your password",
+                        status:true,
+                        admin:{id:decodedToken.id}
+                    }
+                }
+                return{
+                    message:"Invalid verification link",
+                    status:false
+                }
+            }
+
+            return{
+                message:"Invalid verification link",
+                status:false
+            }
+        },
     },
     Mutation:{
         uploadAvatar: async(_,{file},{user})=>{
@@ -390,31 +414,7 @@ const adminResolvers = {
             
         },
 
-        verifyEmail: async(_,{token})=>{
-            const myToken = await Token.findOne({where:{ott:token}})
-
-            if(myToken){
-                const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY)
-                const [admin] = await Admin.update({isAcceptInvite:true, status:true},{where:{id:decodedToken.id}})
-                if(admin){
-                    await Token.destroy({where:{ott:token}})
-                    return{
-                        message:"Account verified, now set your password",
-                        status:true,
-                        admin:{id:decodedToken.id}
-                    }
-                }
-                return{
-                    message:"Invalid verification link",
-                    status:false
-                }
-            }
-
-            return{
-                message:"Invalid verification link",
-                status:false
-            }
-        },
+        
 
         setPassword: async(_,{input})=>{
             const salt = bcrypt.genSaltSync(10);
