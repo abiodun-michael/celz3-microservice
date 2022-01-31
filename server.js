@@ -12,6 +12,7 @@ const PORT = process.env.PORT || 5000
 let allowedOrigins = [
   'http://localhost:3000',
   'https://localhost:3000',
+  "https://www.celz3.com",
   'https://studio.apollographql.com',
 ]
 
