@@ -40,6 +40,8 @@ const startApolloServer = async()=>{
 
 
 app.post("/new-mail",(req,res)=>{
+  const mail = req.body
+  console.log(mail)
   res.send("Hello world")
 })
 
