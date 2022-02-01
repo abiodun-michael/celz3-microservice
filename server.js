@@ -4,7 +4,8 @@ const { ApolloServer } = require("apollo-server-express")
 const { ApolloGateway,RemoteGraphQLDataSource  } = require('@apollo/gateway');
 const cookieParser = require("cookie-parser")
 const cors = require('cors')
-const redis = require('./util/redisConnection')
+const redis = require('./util/redisConnection');
+const { send_command } = require('./util/redisConnection');
 
 const PORT = process.env.PORT || 5000
 
@@ -38,7 +39,9 @@ const startApolloServer = async()=>{
 },credentials:true}))
 
 
-
+app.post("/new-mail",(req,res)=>{
+  res.send("Hello world")
+})
 
 
 const gateway = new ApolloGateway({
