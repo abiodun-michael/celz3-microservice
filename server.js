@@ -5,7 +5,6 @@ const { ApolloGateway,RemoteGraphQLDataSource  } = require('@apollo/gateway');
 const cookieParser = require("cookie-parser")
 const cors = require('cors')
 const redis = require('./util/redisConnection')
-const { v4: uuidv4 } = require('uuid')
 
 const PORT = process.env.PORT || 5000
 
@@ -14,6 +13,7 @@ let allowedOrigins = [
   'https://localhost:3000',
   "https://www.celz3.com",
   'https://studio.apollographql.com',
+  'https://zone-landing-celz3.herokuapp.com'
 ]
 
 
@@ -21,7 +21,7 @@ let allowedOrigins = [
 const startApolloServer = async()=>{
  
   const app = express();
-  app.use(express.json({limit:'1000MB'}))
+  app.use(express.json({limit:'50MB'}))
   app.use(cookieParser())
  
   
