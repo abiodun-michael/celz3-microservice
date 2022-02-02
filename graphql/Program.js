@@ -69,6 +69,9 @@ const programResolvers = {
         createProgram: async(_,{input},{user})=>{
             if(!user) return{message:"Access Denied! You are not authorized to view this resource", status:false}
             input.createdBy = user.id
+            if(!user.zoneId){
+                input.zoneId = 1
+            }
             const [program, created] = await Program.findOrCreate({where:{title:input.title}, defaults:input})
             if(created){
                 await Activity.create({note:`Program Id:${zone.id} created`,actor:user.id})
