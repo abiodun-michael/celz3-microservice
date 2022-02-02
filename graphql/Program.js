@@ -43,7 +43,7 @@ enum PROGRAM_CATEGORY{
         createdBy:Admin
     }
 
-    extend Admin  @key(fields:"id"){
+    extend type Admin  @key(fields:"id"){
         id:Int! @external
     }
 
