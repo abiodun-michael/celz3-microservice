@@ -1,10 +1,12 @@
 const {gql} = require("apollo-server")
-const Zone = require("../database/Zone")
 const Activity = require("../database/Activities")
 const Program = require("../database/Program")
+const Admin = require("../database/Admin")
+
 
 
 const programTypes = gql`
+
 
 enum PROGRAM_CATEGORY{
     GROUP_PASTORS
@@ -36,7 +38,9 @@ enum PROGRAM_CATEGORY{
         meetingTime:String
         type:PROGRAM_TYPE
         visibility:Boolean
+        createdAt:String
         category:PROGRAM_CATEGORY
+        createdBy:Admin
     }
 
     input CreateProgramInput{
@@ -76,6 +80,7 @@ enum PROGRAM_CATEGORY{
 
 
 const programResolvers = {
+
     Query:{
        getAllProgram: async(_,__,{user})=>{
            if(!user) return{message:"Access Denied! You are not authorized to view this resource", status:false}
@@ -85,6 +90,10 @@ const programResolvers = {
            if(!user) return{message:"Access Denied! You are not authorized to view this resource", status:false}
            return await Program.findOne({where:{id}})
        }
+    },
+
+    Program:{
+        createdBy:async({createdBy})=> await Admin.findOne({where:{id: createdBy}})
     },
 
     Mutation:{
