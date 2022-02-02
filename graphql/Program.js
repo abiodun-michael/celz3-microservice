@@ -1,7 +1,7 @@
 const {gql} = require("apollo-server")
 const Activity = require("../database/Activities")
 const Program = require("../database/Program")
-const Admin = require("../database/Admin")
+
 
 
 
@@ -41,6 +41,10 @@ enum PROGRAM_CATEGORY{
         createdAt:String
         category:PROGRAM_CATEGORY
         createdBy:Admin
+    }
+
+    extend Admin  @key(fields:"id"){
+        id:Int! @external
     }
 
     input CreateProgramInput{
@@ -93,6 +97,9 @@ const programResolvers = {
     },
 
     Program:{
+        createdBy({createdBy}){
+            return {__typename:"Program", id:createdBy}
+        },
         createdBy:async({createdBy})=> await Admin.findOne({where:{id: createdBy}})
     },
 
