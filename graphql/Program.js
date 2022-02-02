@@ -6,6 +6,16 @@ const Program = require("../database/Program")
 
 const programTypes = gql`
 
+enum PROGRAM_CATEGORY{
+    GROUP_PASTORS
+    PASTORS
+    CELL_LEADER
+    STAFF
+    COORDINATORS
+    ALL
+    OTHERS
+}
+
     enum PROGRAM_TYPE{
         ONLINE
         ONSITE
@@ -21,22 +31,34 @@ const programTypes = gql`
         id:Int
         title:String
         desc:String
+        startDate:String
+        endDate:String
+        meetingTime:String
         type:PROGRAM_TYPE
         visibility:Boolean
+        category:PROGRAM_CATEGORY
     }
 
     input CreateProgramInput{
         title:String!
+        startDate:String
+        endDate:String
+        meetingTime:String
         desc:String
         type:PROGRAM_TYPE!
+        category:PROGRAM_CATEGORY!
     }
 
     input UpdateProgramInput{
         id:Int!
         title:String!
+        startDate:String
+        endDate:String
+        meetingTime:String
         desc:String
-        tyoe:PROGRAM_TYPE!
+        type:PROGRAM_TYPE!
         visibility:Boolean
+        category:PROGRAM_CATEGORY!
     }
 
 

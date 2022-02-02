@@ -16,7 +16,7 @@ const Program = Connection.define("program",{
         type:DataTypes.ENUM("ONSITE","ONLINE"),
         allowNull:false
     },
-    startedDate:{
+    startDate:{
         type:DataTypes.DATE,
         allowNull:true
     },
@@ -27,6 +27,11 @@ const Program = Connection.define("program",{
     meetingTime:{
         type:DataTypes.TIME,
         allowNull:true
+    },
+    category:{
+        type:DataTypes.ENUM("GROUP_PASTORS","PASTORS","CELL_LEADER","STAFF","COORDINATORS","ALL","OTHERS"),
+        allowNull:false,
+        defaultValue:"ALL"
     },
     visibility:{
         type:DataTypes.BOOLEAN,
@@ -43,6 +48,6 @@ const Program = Connection.define("program",{
 Zone.hasMany(Program)
 
 
-Program.sync()
+Program.sync({force:true})
 
 module.exports = Program
