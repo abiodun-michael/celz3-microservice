@@ -44,7 +44,7 @@ enum PROGRAM_CATEGORY{
     }
 
     extend type Admin  @key(fields:"id"){
-        id:Int! @external
+        id:Int @external
     }
 
     input CreateProgramInput{
