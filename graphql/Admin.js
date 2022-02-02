@@ -43,7 +43,7 @@ enum PORTAL_ACCESS_TYPE{
         admin:Admin
     }
 
-    type Admin{
+    type Admin @key(fields:"id"){
         id:Int
         fullName:String
         phone:String
