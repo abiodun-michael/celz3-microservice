@@ -100,7 +100,7 @@ const programResolvers = {
         createdBy({createdBy}){
             return {__typename:"Program", id:createdBy}
         },
-        createdBy:async({createdBy})=> await Admin.findOne({where:{id: createdBy}})
+      
     },
 
     Mutation:{
