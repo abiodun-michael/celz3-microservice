@@ -39,7 +39,7 @@ const startApolloServer = async()=>{
 },credentials:true}))
 
 
-app.post("/new-mail",(req,res)=>{
+app.post("/inbound",(req,res)=>{
   const mail = req.body
   console.log(mail)
   res.send("Hello world")
