@@ -209,6 +209,12 @@ const adminResolvers = {
             }
         },
     },
+
+    Program:{
+        __resolveReference({id}) {
+            return async()=> await Admin.findOne({where:{id}})
+          }
+    },
     Mutation:{
         uploadAvatar: async(_,{file},{user})=>{
             if(!user){
