@@ -96,7 +96,7 @@ const programResolvers = {
             }
             const [program, created] = await Program.findOrCreate({where:{title:input.title}, defaults:input})
             if(created){
-                await Activity.create({note:`Program Id:${zone.id} created`,actor:user.id})
+                await Activity.create({note:`Program Id:${program.id} created`,actor:user.id})
                 return{
                     message:"Program created!",
                     status:true,
