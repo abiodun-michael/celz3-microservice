@@ -48,6 +48,6 @@ const Program = Connection.define("program",{
 Zone.hasMany(Program)
 
 
-Program.sync({force:true})
+Program.sync({force:false})
 
 module.exports = Program
