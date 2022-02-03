@@ -143,14 +143,14 @@ const adminResolvers = {
             return await Admin.findOne({where:{id:user.id}})
         },
         getAllAdmin: async(_,__,{user})=>{
-            if(!user || !["SUPER","ZONAL"].includes(user.portalAccess)){
+            if(!user || !["SYSTEM","ZONAL"].includes(user.portalAccess)){
                 return{
                     message:"Access Denied! You are not authorized to perform this operation",
                     status:false
                 }
             }
 
-            return await Admin.findAll({where:{portalAccess:"SUPER"}})
+            return await Admin.findAll({where:{portalAccess:"SYSTEM"}})
            
         },
         getAdminByChurchId: async(_,{id},{user})=>{
