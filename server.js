@@ -14,7 +14,8 @@ let allowedOrigins = [
   'https://localhost:3000',
   "https://www.celz3.com",
   'https://studio.apollographql.com',
-  'https://zone-landing-celz3.herokuapp.com'
+  'https://zone-landing-celz3.herokuapp.com',
+  'https://churchtest-gamma.vercel.app'
 ]
 
 
