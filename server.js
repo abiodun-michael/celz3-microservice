@@ -1,7 +1,7 @@
 require('dotenv').config()
 const express = require("express")
 const { ApolloServer } = require("apollo-server-express")
-const { ApolloGateway,RemoteGraphQLDataSource,IntrospectAndCompose  } = require('@apollo/gateway');
+const { ApolloGateway,RemoteGraphQLDataSource } = require('@apollo/gateway');
 const cookieParser = require("cookie-parser")
 const cors = require('cors')
 const redis = require('./util/redisConnection');
@@ -15,7 +15,6 @@ let allowedOrigins = [
   "https://www.celz3.com",
   'https://studio.apollographql.com',
   'https://zone-landing-celz3.herokuapp.com',
-  'https://churchtest-gamma.vercel.app'
 ]
 
 
@@ -40,22 +39,9 @@ const startApolloServer = async()=>{
 },credentials:true}))
 
 
-app.post("/inbound",(req,res)=>{
-  const mail = req.body
-  console.log(mail)
-  res.send("Hello world")
-})
 
 
 const gateway = new ApolloGateway({
-  supergraphSdl: new IntrospectAndCompose({
-    subgraphs: [
-      { name: 'auth', url: 'https://testapi-auth-celz3.herokuapp.com/graphql' },
-      { name: 'church', url: 'https://testapi-church-celz3.herokuapp.com/graphql' },
-      { name: 'messaging', url: 'https://testapi-messaging-celz3.herokuapp.com/graphql' },
-      // ...additional subgraphs...
-    ],
-  }),
   subscription:false,
   buildService({ url }) {
     return new RemoteGraphQLDataSource({
