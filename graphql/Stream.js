@@ -49,8 +49,9 @@ const streamTypes = gql`
     }
 
     type Live{
-        videoId:String
-        duration:Float
+        uid:String
+        name:String
+        created:String
         readyToStream:Boolean
     }
 
@@ -88,7 +89,7 @@ const streamTypes = gql`
         getAllStreamByZone:[Stream]
         getAllStreamByGroupId(id:Int!):[Stream]
         getStreamById(id:Int!):Stream
-        getLiveStreamByStreamId(id:String!):Live
+        getMyVideo(id:String!):[Live]
         getLiveVideoIdByStreamId(id:String!):Video
     }
 
@@ -113,7 +114,7 @@ const streamResolvers = {
            if(!user) return{message:"Access Denied! You are not authorized to view this resource", status:false}
            return await Stream.findOne({where:{id}})
        },
-       getLiveStreamByStreamId:async(_,{id})=>{
+       getMyVideo:async(_,{id})=>{
       
 
             const {data} = await axios({
@@ -125,15 +126,9 @@ const streamResolvers = {
             }) 
 
             if(data){
-                const respo = data?.result
-                const {readyToStream,duration,playback} = respo[respo.length - 1] || {}
-
-                return{
-                    readyToStream,
-                    duration,
-                    hlsUrl: playback?.hls
-                }
+               return data?.result?.map(({uid,meta,readyToStream,created})=>({uid,name:meta.name,readyToStream,created}))
             }
+            return []
        },
        getLiveVideoIdByStreamId:async(_,{id})=>{
       
