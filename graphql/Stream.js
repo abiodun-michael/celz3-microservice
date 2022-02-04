@@ -49,9 +49,15 @@ const streamTypes = gql`
     }
 
     type Live{
-        hlsUrl:String
+        videoId:String
         duration:Float
         readyToStream:Boolean
+    }
+
+    type Video{
+        id:String
+        live:Boolean
+        isInput:Boolean
     }
 
     input CreateStreamInput{
@@ -83,6 +89,7 @@ const streamTypes = gql`
         getAllStreamByGroupId(id:Int!):[Stream]
         getStreamById(id:Int!):Stream
         getLiveStreamByStreamId(id:String!):Live
+        getLiveVideoIdByStreamId(id:String!):Video
     }
 
     extend type Mutation{
@@ -125,6 +132,25 @@ const streamResolvers = {
                     readyToStream,
                     duration,
                     hlsUrl: playback?.hls
+                }
+            }
+       },
+       getLiveVideoIdByStreamId:async(_,{id})=>{
+      
+
+            const {data} = await axios({
+                method:"get",
+                url:`https://videodelivery.net/${id}/lifecycle`
+            }) 
+
+            if(data){
+  
+                const {videoUID,live,inInput} = data?.result
+
+                return{
+                    id:videoUID,
+                    live,
+                    inInput
                 }
             }
        }
