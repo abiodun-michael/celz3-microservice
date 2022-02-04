@@ -111,7 +111,10 @@ const streamResolvers = {
 
             const {data} = await axios({
                 method:"get",
-                url:ENDPOINT+`accounts/${APP_ID}/stream/live_inputs/${id}/videos`
+                url:ENDPOINT+`accounts/${APP_ID}/stream/live_inputs/${id}/videos`,
+                headers:{
+                    Authorization:`Bearer ${TOKEN}`
+                }
             }) 
 
             if(data){
