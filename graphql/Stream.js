@@ -48,6 +48,12 @@ const streamTypes = gql`
         output:[Output]
     }
 
+    type Live{
+        hlsUrl:String
+        duration:Float
+        readyToStream:Boolean
+    }
+
     input CreateStreamInput{
         name:String!
         ownerType:STREAM_OWNER_TYPE!
@@ -76,6 +82,7 @@ const streamTypes = gql`
         getAllStreamByZone:[Stream]
         getAllStreamByGroupId(id:Int!):[Stream]
         getStreamById(id:Int!):Stream
+        getLiveStreamByStreamId(id:String!):Live
     }
 
     extend type Mutation{
@@ -98,6 +105,25 @@ const streamResolvers = {
        getStreamById: async(_,{id},{user})=>{
            if(!user) return{message:"Access Denied! You are not authorized to view this resource", status:false}
            return await Stream.findOne({where:{id}})
+       },
+       getLiveStreamByStreamId:async(_,{id})=>{
+      
+
+            const {data} = await axios({
+                method:"get",
+                url:ENDPOINT+`accounts/${APP_ID}/stream/live_inputs/${id}/videos`
+            }) 
+
+            if(data){
+                const respo = data?.result
+                const {readyToStream,duration,playback} = respo[respo.length - 1] || {}
+
+                return{
+                    readyToStream,
+                    duration,
+                    hlsUrl: playback?.hls
+                }
+            }
        }
     },
     Stream:{
