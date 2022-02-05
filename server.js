@@ -107,7 +107,8 @@ const io = new Server(appServer,{
 
 io.on("connection", (socket) => {
     const cookies = socket.request.headers
-    socket.emit("connected",cookies)
+    io.emit("welcome","Hello welcome")
+    io.emit("connected",cookies)
 });
 
 }
