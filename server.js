@@ -6,7 +6,7 @@ const {typeDefs, resolvers} = require('./graphql/index')
 const { buildSubgraphSchema } = require('@apollo/subgraph')
 // const subscriptions = require('./util/subscriptions')
 const app = express();
-const httpServer = require("http").createServer(app);
+const httpServer = require("https").createServer(app);
 const {Server} = require("socket.io")
 
 const io = new Server(httpServer,{
