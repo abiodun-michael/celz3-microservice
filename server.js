@@ -105,10 +105,17 @@ const io = new Server(appServer,{
   }
 })
 
-io.on("connection", (socket) => {
-    const cookies = parse(socket.request.headers.cookie || "")
-    io.emit("welcome","Hello welcome")
-    io.emit("connected",cookies)
+io.on("connection", async(socket) => {
+    const heae = socket.request.headers
+
+    console.log(heae)
+      //const user = await redis.get(lz3_uuid)
+
+      // if(user){
+      //   io.emit("welcome","Hello welcome")
+      // }
+    
+    // io.emit("connected",cookies)
 });
 
 }
