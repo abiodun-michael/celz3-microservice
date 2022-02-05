@@ -29,17 +29,9 @@ const Stream = Connection.define("stream",{
         allowNull:false,
         allowNull:"ZONE"
     },
-    zoneId:{
+    ownerId:{
         type:DataTypes.INTEGER,
         allowNull:false
-    },
-    groupId:{
-        type:DataTypes.INTEGER,
-        allowNull:true
-    },
-    churchId:{
-        type:DataTypes.INTEGER,
-        allowNull:true
     },
     createdBy:{
         type:DataTypes.INTEGER,

@@ -48,14 +48,14 @@ const streamTypes = gql`
         output:[Output]
     }
 
-    type Live{
+    type Video{
         uid:String
         name:String
         created:String
         readyToStream:Boolean
     }
 
-    type Video{
+    type Live{
         id:String
         live:Boolean
         isInput:Boolean
@@ -89,8 +89,9 @@ const streamTypes = gql`
         getAllStreamByZone:[Stream]
         getAllStreamByGroupId(id:Int!):[Stream]
         getStreamById(id:Int!):Stream
-        getMyVideo(id:String!):[Live]
-        getLiveVideoIdByStreamId(id:String!):Video
+        getMyVideo:[Video]
+        getMyStreamInfo: Stream
+        getLiveVideoIdByStreamId(id:String!):Live
     }
 
     extend type Mutation{
@@ -114,20 +115,64 @@ const streamResolvers = {
            if(!user) return{message:"Access Denied! You are not authorized to view this resource", status:false}
            return await Stream.findOne({where:{id}})
        },
-       getMyVideo:async(_,{id})=>{
-      
-
-            const {data} = await axios({
-                method:"get",
-                url:ENDPOINT+`accounts/${APP_ID}/stream/live_inputs/${id}/videos`,
-                headers:{
-                    Authorization:`Bearer ${TOKEN}`
-                }
-            }) 
-
-            if(data){
-               return data?.result?.map(({uid,meta,readyToStream,created})=>({uid,name:meta.name,readyToStream,created}))
+       getMyStreamInfo:async(_,__,{user})=>{
+            if(!user) return null
+            let level = {
+                ownerId:null,
+                ownerType:""
             }
+            let
+            if(user.portalAccess == "ZONE"){
+                level.ownerType = "ZONE"
+                level.ownerId = user.zoneId
+            }
+            if(user.portalAccess == "GROUP"){
+                level.ownerType = "GROUP"
+                level.ownerId = user.groupId
+            }
+            if(user.portalAccess == "CHURCH"){
+                level.ownerType = "CHURCH"
+                level.ownerId = user.churchId
+            }
+
+            return await Stream.findOne({where:level})
+       },
+       getMyVideo:async(_,__,{user})=>{
+        if(!user) return null
+            let level = {
+                ownerId:null,
+                ownerType:""
+            }
+            let
+            if(user.portalAccess == "ZONE"){
+                level.ownerType = "ZONE"
+                level.ownerId = user.zoneId
+            }
+            if(user.portalAccess == "GROUP"){
+                level.ownerType = "GROUP"
+                level.ownerId = user.groupId
+            }
+            if(user.portalAccess == "CHURCH"){
+                level.ownerType = "CHURCH"
+                level.ownerId = user.churchId
+            }
+
+            const stream = await Stream.findOne({where:level})
+
+            if(stream){
+                const {data} = await axios({
+                    method:"get",
+                    url:ENDPOINT+`accounts/${APP_ID}/stream/live_inputs/${stream?.streamId}/videos`,
+                    headers:{
+                        Authorization:`Bearer ${TOKEN}`
+                    }
+                }) 
+    
+                if(data){
+                   return data?.result?.map(({uid,meta,readyToStream,created})=>({uid,name:meta.name,readyToStream,created}))
+                }
+            }
+            
             return []
        },
        getLiveVideoIdByStreamId:async(_,{id})=>{
