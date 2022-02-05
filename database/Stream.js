@@ -40,6 +40,6 @@ const Stream = Connection.define("stream",{
 })
 
 
-Stream.sync({force:true})
+Stream.sync({force:false})
 
 module.exports = Stream
