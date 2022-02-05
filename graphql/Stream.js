@@ -53,6 +53,7 @@ const streamTypes = gql`
         name:String
         created:String
         readyToStream:Boolean
+        status:String
     }
 
     type Live{
@@ -165,7 +166,7 @@ const streamResolvers = {
                 }) 
     
                 if(data){
-                   return data?.result?.map(({uid,meta,readyToStream,created})=>({uid,name:meta.name,readyToStream,created}))
+                   return data?.result?.map(({uid,meta,readyToStream,status,created})=>({uid,name:meta.name,readyToStream,created,status:status?.state}))
                 }
             }
             
