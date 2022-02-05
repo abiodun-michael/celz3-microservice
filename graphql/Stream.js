@@ -121,7 +121,7 @@ const streamResolvers = {
                 ownerId:null,
                 ownerType:""
             }
-            let
+           
             if(user.portalAccess == "ZONE"){
                 level.ownerType = "ZONE"
                 level.ownerId = user.zoneId
@@ -143,7 +143,7 @@ const streamResolvers = {
                 ownerId:null,
                 ownerType:""
             }
-            let
+            
             if(user.portalAccess == "ZONE"){
                 level.ownerType = "ZONE"
                 level.ownerId = user.zoneId
