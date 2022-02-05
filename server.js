@@ -111,9 +111,16 @@ io.on("connection", async(socket) => {
       if(user){
         const {fullName,id} = JSON.parse(user)
         io.emit("welcome",`${fullName} joined`)
+
+        socket.on("send_comment",(msg)=>{
+          console.log(msg)
+        })
+
+
       }
     
-    // io.emit("connected",cookies)
+   
+
 });
 
 }
