@@ -115,7 +115,7 @@ io.on("connection", async(socket) => {
         io.emit("welcome",`${user?.firstName} joined`)
       }
     
-    io.emit("connected",cookies)
+    // io.emit("connected",cookies)
 });
 
 }
