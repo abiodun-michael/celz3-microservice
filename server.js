@@ -1,5 +1,6 @@
 require('dotenv').config()
 const express = require("express")
+const cors = require("cors")
 const { ApolloServer } = require("apollo-server-express")
 const {typeDefs, resolvers} = require('./graphql/index')
 const { buildSubgraphSchema } = require('@apollo/subgraph')
@@ -31,7 +32,7 @@ const PORT = process.env.PORT || 4001
 
 
     const startApolloServer = async()=>{
- 
+      app.use(cors())
      
       app.use(express.json({limit:'50MB'}))
 
