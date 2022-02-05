@@ -6,23 +6,9 @@ const {typeDefs, resolvers} = require('./graphql/index')
 const { buildSubgraphSchema } = require('@apollo/subgraph')
 // const subscriptions = require('./util/subscriptions')
 const app = express();
-const httpServer = require("https").createServer(app);
 const {Server} = require("socket.io")
 
-const io = new Server(httpServer,{
-  cors:{
-    origin: ["https://localhost:3000"],
-    credentials: true
-  }
-})
 
-
-io.on('connection', (socket) => {
-  console.log("Someone connected")
-  socket.on('chat message', (msg) => {
-    console.log('message: ' + msg);
-  });
-});
 
 
 
@@ -55,8 +41,16 @@ const PORT = process.env.PORT || 4001
     
     server.applyMiddleware({app,cors:false})
     
-    app.listen(PORT,()=>{
+    const appServer = app.listen(PORT,()=>{
     console.log(`Media Service running at http://localhost:${PORT}`)
+    })
+
+
+    const io = new Server(appServer,{
+      cors:{
+        origin: ["https://localhost:3000"],
+        credentials: true
+      }
     })
     
     }
