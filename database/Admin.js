@@ -70,7 +70,7 @@ const Admin = Connection.define("admin",{
 
 
 
-Admin.sync({force:true})
+Admin.sync({force:false})
 
 
 module.exports = Admin
