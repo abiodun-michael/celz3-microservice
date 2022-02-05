@@ -6,12 +6,14 @@ const { buildSubgraphSchema } = require('@apollo/subgraph')
 // const subscriptions = require('./util/subscriptions')
 const app = express();
 const httpServer = require("http").createServer(app);
-const io = require("socket.io")(httpServer, {
-  cors: {
-    origin: "https://localhost:3000",
-  },
-});
+const {Server} = require("socket.io")
 
+const io = new Server(httpServer,{
+  cors:{
+    origin: ["https://localhost:3000"],
+    credentials: true
+  }
+})
 
 const PORT = process.env.PORT || 4001
 
