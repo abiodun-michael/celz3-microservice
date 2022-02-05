@@ -24,16 +24,12 @@ const Admin = Connection.define("admin",{
         allowNull:false
     },
     permissions:{
-        type:DataTypes.ENUM("SYSTEM","CHURCH_MINISTRY","CELL_MINISTRY","FINANCE","PARTNERSHIP","MEDIA","FOUNDATION_SCHOOL"),
+        type:DataTypes.ENUM("SYSTEM","CHURCH_MINISTRY","CELL_MINISTRY","FINANCE","PARTNERSHIP","MEDIA","FOUNDATION_SCHOOL","MEMBER","CELL_LEADER"),
         allowNull:false
     },
     role:{
         type:DataTypes.ENUM("SYSTEM","ADMIN","EDITOR","VIEWER"),
         allowNull:false
-    },
-    profileId:{
-        type:DataTypes.INTEGER,
-        allowNull:true
     },
     cellId:{
         type:DataTypes.INTEGER,
@@ -74,7 +70,7 @@ const Admin = Connection.define("admin",{
 
 
 
-Admin.sync()
+Admin.sync({force:true})
 
 
 module.exports = Admin
