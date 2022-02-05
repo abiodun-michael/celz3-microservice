@@ -7,7 +7,7 @@ const cors = require('cors')
 const redis = require('./util/redisConnection');
 const { send_command } = require('./util/redisConnection');
 const {Server} = require("socket.io")
-
+const {parse} = require('cookie');
 
 
 const PORT = process.env.PORT || 5000
@@ -106,7 +106,7 @@ const io = new Server(appServer,{
 })
 
 io.on("connection", (socket) => {
-    const cookies = socket.request.headers.cookie
+    const cookies = parse(socket.request.headers.cookie)
     io.emit("welcome","Hello welcome")
     io.emit("connected",cookies)
 });
