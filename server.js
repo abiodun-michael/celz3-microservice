@@ -113,7 +113,7 @@ io.on("connection", async(socket) => {
         io.emit("welcome",`${fullName} joined`)
 
         socket.on("send_comment",(msg)=>{
-          console.log(msg)
+            io.emit("receive_message",{comment:msg,user:fullName})
         })
 
 
