@@ -20,7 +20,7 @@ const Admin = Connection.define("admin",{
         allowNull:false
     },
     portalAccess:{
-        type:DataTypes.ENUM("SYSTEM","ZONAL","GROUP","CHURCH","CELL"),
+        type:DataTypes.ENUM("SYSTEM","ZONE","GROUP","CHURCH","CELL"),
         allowNull:false
     },
     permissions:{

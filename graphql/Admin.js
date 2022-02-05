@@ -25,7 +25,7 @@ enum PERMISSION_TYPE{
 
 enum PORTAL_ACCESS_TYPE{
     SYSTEM
-    ZONAL
+    ZONE
     GROUP
     CHURCH
     CELL
