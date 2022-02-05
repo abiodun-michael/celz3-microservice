@@ -42,7 +42,6 @@ const Admin = Connection.define("admin",{
     zoneId:{
         type:DataTypes.INTEGER,
         allowNull:false,
-        defaultValue:1
     },
     password:{
         type:DataTypes.STRING,

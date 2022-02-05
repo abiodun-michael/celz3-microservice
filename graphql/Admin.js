@@ -58,6 +58,7 @@ enum PORTAL_ACCESS_TYPE{
         lastSeen:String
         churchId:Int
         groupId:Int
+        zoneId:Int
         cellId:Int
     }
 
@@ -69,6 +70,7 @@ enum PORTAL_ACCESS_TYPE{
         profileId:Int
         churchId:Int
         groupId:Int
+        zoneId:Int
         cellId:Int
         portalAccess:PORTAL_ACCESS_TYPE!
         permissions:PERMISSION_TYPE!
