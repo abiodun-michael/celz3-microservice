@@ -108,11 +108,8 @@ const io = new Server(appServer,{
 io.on("connection", async(socket) => {
     const {lz3_uuid} = parse(socket.request.headers.cookie || "") || {}
       const user = await redis.get(lz3_uuid)
-
-      console.log(user)
-
       if(user){
-        io.emit("welcome",`${user?.firstName} joined`)
+        io.emit("welcome",`${user?.fullName} joined`)
       }
     
     // io.emit("connected",cookies)
