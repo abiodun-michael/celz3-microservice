@@ -15,6 +15,17 @@ const io = new Server(httpServer,{
   }
 })
 
+
+io.on('connection', (socket) => {
+  console.log("Someone connected")
+  socket.on('chat message', (msg) => {
+    console.log('message: ' + msg);
+  });
+});
+
+
+
+
 const PORT = process.env.PORT || 4001
 
 
