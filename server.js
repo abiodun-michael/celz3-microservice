@@ -109,7 +109,8 @@ io.on("connection", async(socket) => {
     const {lz3_uuid} = parse(socket.request.headers.cookie || "") || {}
       const user = await redis.get(lz3_uuid)
       if(user){
-        io.emit("welcome",`${user?.fullName} joined`)
+        const {fullName,id} = JSON.parse(user)
+        io.emit("welcome",`${fullName} joined`)
       }
     
     // io.emit("connected",cookies)
