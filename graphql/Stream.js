@@ -1,5 +1,5 @@
 require("dotenv").config()
-const {gql} = require("apollo-server")
+const {gql} = require("apollo-server-express")
 const Stream = require("../database/Stream")
 const axios = require("axios")
 const Output = require("../database/Output")
@@ -87,6 +87,7 @@ const streamTypes = gql`
         getAllStreamByGroupId(id:Int!):[Stream]
         getStreamById(id:Int!):Stream
         getMyVideo:[Video]
+        getVideoInfoById(id:String!):Video
         getMyStreamInfo: Stream
         getLiveVideoIdByStreamId(id:String!):Live
     }
@@ -133,6 +134,9 @@ const streamResolvers = {
             }
 
             return await Stream.findOne({where:level})
+       },
+       getVideoInfoById: async(_,{id})=>{
+
        },
        getMyVideo:async(_,__,{user})=>{
         if(!user) return null
