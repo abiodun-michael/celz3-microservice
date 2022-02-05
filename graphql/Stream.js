@@ -64,9 +64,7 @@ const streamTypes = gql`
     input CreateStreamInput{
         name:String!
         ownerType:STREAM_OWNER_TYPE!
-        zoneId:Int!
-        groupId:Int
-        churchId:Int
+        ownerId:Int!
     }
 
     input CreateOutputInput{
