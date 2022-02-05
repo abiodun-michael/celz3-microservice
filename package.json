@@ -21,6 +21,7 @@
     "express": "^4.17.2",
     "graphql": "^15.8.0",
     "ioredis": "^4.28.3",
+    "socket.io": "^4.4.1",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

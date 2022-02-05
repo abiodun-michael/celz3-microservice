@@ -6,6 +6,9 @@ const cookieParser = require("cookie-parser")
 const cors = require('cors')
 const redis = require('./util/redisConnection');
 const { send_command } = require('./util/redisConnection');
+const {Server} = require("socket.io")
+
+
 
 const PORT = process.env.PORT || 5000
 
@@ -91,8 +94,15 @@ await server.start()
 
 server.applyMiddleware({app,cors:false})
 
-app.listen(PORT,()=>{
+const appServer = app.listen(PORT,()=>{
 console.log(`Auth Service running at http://localhost:${PORT}`)
+})
+
+const io = new Server(appServer,{
+  cors:{
+    origin: ["https://localhost:3000"],
+    credentials: true
+  }
 })
 
 }
