@@ -78,9 +78,7 @@ const streamTypes = gql`
         id:Int!
         name:String!
         ownerType:STREAM_OWNER_TYPE!
-        zoneId:Int!
-        groupId:Int
-        churchId:Int
+        ownerId:Int!
     }
 
     extend type Query{
