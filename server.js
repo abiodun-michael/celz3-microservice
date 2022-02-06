@@ -9,8 +9,11 @@ const config = {
     ping_timeout: 60
   },
   http: {
-    port: 8000,
+    port: process.env.PORT || 8000,
     allow_origin: '*'
+  },
+  https:{
+      port:process.env.PORT
   }
 };
 
