@@ -1,9 +1,7 @@
 require('dotenv').config()
 const express = require("express")
 const { ApolloServer } = require("apollo-server-express")
-const { ApolloGateway } = require('@apollo/gateway');
-const FileUploadDataSource = require("@profusion/apollo-federation-upload").default;
-const { graphqlUploadExpress } = require("graphql-upload");
+const { ApolloGateway, RemoteGraphQLDataSource } = require('@apollo/gateway');
 const cookieParser = require("cookie-parser")
 const cors = require('cors')
 const redis = require('./util/redisConnection');
@@ -44,15 +42,14 @@ const startApolloServer = async()=>{
 
 app.use(express.json({limit:'50MB'}))
 app.use(cookieParser())
-app.use(graphqlUploadExpress());
+
 
 
 const gateway = new ApolloGateway({
   subscription:false,
   buildService({ url }) {
-    return new FileUploadDataSource({
+    return new RemoteGraphQLDataSource({
       url,
-      useChunkedTransfer:true,
       willSendRequest({ request, context }) {
           request.http?.headers.set("user", context.user);
       },
