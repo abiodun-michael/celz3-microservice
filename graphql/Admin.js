@@ -115,7 +115,6 @@ enum PORTAL_ACCESS_TYPE{
     }
 
    type Mutation{
-       uploadAvatar(file:Upload!):AdminMutationResponse
         inviteAdminBySuperAdmin(input:CreateAdminInput):AdminMutationResponse
         inviteAdmin(input:CreateAdminInput):AdminMutationResponse
         updateAdmin(input:UpdateAdminInput):AdminMutationResponse
