@@ -6,7 +6,7 @@ const { buildSubgraphSchema } = require('@apollo/subgraph')
 
 
 
-const PORT = process.env.PORT || 4001
+const PORT = process.env.PORT || 4002
 
 
 
