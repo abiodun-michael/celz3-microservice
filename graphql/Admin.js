@@ -226,16 +226,17 @@ const adminResolvers = {
                     status:false
                 }
             }
-                const { createReadStream } = await file
+                const { createReadStream, filename } = await file
+                console.log(filename)
                 const stream = createReadStream()
-                const {secure_url} = await uploadImage(stream,"avatar")
-                const [admin] = await Admin.update({photoUrl:secure_url},{where:{id:user.id}})
-                if(admin){
-                    return{
-                        message:"Profile picture uploaded",
-                        status:true
-                    }
-                }
+                // const {secure_url} = await uploadImage(stream,"avatar")
+                // const [admin] = await Admin.update({photoUrl:secure_url},{where:{id:user.id}})
+                // if(admin){
+                //     return{
+                //         message:"Profile picture uploaded",
+                //         status:true
+                //     }
+                // }
                 return{
                     message:"Sorry, we could not upload your photo",
                     status:false
