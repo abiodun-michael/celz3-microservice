@@ -129,8 +129,6 @@ enum PORTAL_ACCESS_TYPE{
 
 
 const adminResolvers = {
-    Upload: GraphQLUpload,
-
     Query:{
         getMyProfile: async(_,__,{user})=>{
             if(!user){
