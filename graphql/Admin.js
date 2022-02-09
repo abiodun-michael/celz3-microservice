@@ -6,11 +6,8 @@ const jwt = require('jsonwebtoken')
 const redis = require('../util/redisConnection')
 const bcrypt = require('bcrypt')
 const { v4: uuidv4 } = require('uuid')
-const { GraphQLUpload } = require('graphql-upload')
 
 const adminTypes = gql`
-
-scalar Upload
 
 enum PERMISSION_TYPE{
     SYSTEM
@@ -219,31 +216,6 @@ const adminResolvers = {
           }
     },
     Mutation:{
-        uploadAvatar: async(_,{file},{user})=>{
-            if(!user){
-                return{
-                    message:"Access Denied! You are not authorized to perform this operation",
-                    status:false
-                }
-            }
-                const { createReadStream, filename } = await file
-                console.log(filename)
-                const stream = createReadStream()
-                // const {secure_url} = await uploadImage(stream,"avatar")
-                // const [admin] = await Admin.update({photoUrl:secure_url},{where:{id:user.id}})
-                // if(admin){
-                //     return{
-                //         message:"Profile picture uploaded",
-                //         status:true
-                //     }
-                // }
-                return{
-                    message:"Sorry, we could not upload your photo",
-                    status:false
-                }
-            
-
-        },
         inviteAdminBySuperAdmin: async(_,{input})=>{
             input.invitedBy = 0
             const [admin, created] = await Admin.findOrCreate({where:{email:input.email}, defaults:input})
