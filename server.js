@@ -3,6 +3,7 @@ const express = require("express")
 const { ApolloServer } = require("apollo-server-express")
 const { ApolloGateway } = require('@apollo/gateway');
 const FileUploadDataSource = require("@profusion/apollo-federation-upload").default;
+const { graphqlUploadExpress } = require("graphql-upload");
 const cookieParser = require("cookie-parser")
 const cors = require('cors')
 const redis = require('./util/redisConnection');
