@@ -1,6 +1,6 @@
 FROM node:16
 
-ENV DATABASE_URL=mysql://swish:M/RrfgKIRjB9VJ!s@mydb/authentication-service
+ENV DATABASE_URL=mysql://swish:nJRMUV0xA2sRHHE@mydb/authentication-service
 # Create app directory
 WORKDIR /usr/src/app
 
