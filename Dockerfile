@@ -1,6 +1,6 @@
 FROM node:16
 
-ENV DATABASE_URL=postgres://auejentqagwefp:7e49307bd5bbe8353fc63517f79d917f540eb7a6650c5ef799d73f8f31e8bc63@ec2-54-220-14-54.eu-west-1.compute.amazonaws.com:5432/dfnslink1dl3mg
+ENV DATABASE_URL=mysql://swish:M/RrfgKIRjB9VJ!s@mydb/authentication-service
 # Create app directory
 WORKDIR /usr/src/app
 

@@ -10,9 +10,9 @@ const Connection = new Sequelize(process.env.DATABASE_URL,{
         idle: 10000
       },
       dialectOptions:{
-          ssl:{
-              rejectUnauthorized:false
-          }
+        //   ssl:{
+        //       rejectUnauthorized:false
+        //   }
       }
 })
 
