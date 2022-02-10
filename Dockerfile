@@ -1,6 +1,10 @@
 FROM node:16
 
-ENV DATABASE_URL=mysql://swish:nJRMUV0xA2sRHHE@mydb/authentication-service
+ENV DB_NAME=authentication-service\
+    DB_USER=swish\
+    DB_PASSWORD=WdUG_xhYMOne)f41\
+    DB_HOST=celz3-network\
+    DB_DIALECT=mysql
 # Create app directory
 WORKDIR /usr/src/app
 
