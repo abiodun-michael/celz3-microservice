@@ -1,7 +1,7 @@
 require('dotenv').config()
 const express = require("express")
 const { ApolloServer } = require("apollo-server-express")
-const { ApolloGateway, RemoteGraphQLDataSource } = require('@apollo/gateway');
+const { ApolloGateway,IntrospectAndCompose, RemoteGraphQLDataSource } = require('@apollo/gateway');
 const cookieParser = require("cookie-parser")
 const cors = require('cors')
 const redis = require('./util/redisConnection');
@@ -47,6 +47,11 @@ app.use(cookieParser())
 
 const gateway = new ApolloGateway({
   subscription:false,
+  supergraphSdl: new IntrospectAndCompose({
+    subgraphs: [
+      { name: 'auth', url: 'apps_authentication_1' },
+    ],
+  }),
   buildService({ url }) {
     return new RemoteGraphQLDataSource({
       url,
