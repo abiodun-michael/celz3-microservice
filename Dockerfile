@@ -1,6 +1,5 @@
 FROM node:16
 
-ENV DATABASE_URL=
 # Create app directory
 WORKDIR /usr/src/app
 
