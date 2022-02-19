@@ -6,6 +6,7 @@ const {groupTypes, groupResolvers} = require("./Group")
 const {cellTypes, cellResolvers} = require("./Cell")
 const {zoneTypes, zoneResolvers} = require("./Zone")
 const {programTypes, programResolvers} = require("./Program")
+const {viewerTypes, viewerResolvers} = require("./Viewer")
 
 
 
@@ -16,7 +17,8 @@ const types = [
   groupTypes,
   cellTypes,
   zoneTypes,
-  programTypes
+  programTypes,
+  viewerTypes
   ];
   
 const resolvers = [
@@ -26,7 +28,8 @@ const resolvers = [
   groupResolvers,
   cellResolvers,
   zoneResolvers,
-  programResolvers
+  programResolvers,
+  viewerResolvers
 ];
     
 
