@@ -1,5 +1,4 @@
 require('dotenv').config()
-require('newrelic')
 const {typeDefs, resolvers} = require('./graphql/index')
 const { ApolloServer } = require("apollo-server")
 const { buildSubgraphSchema } = require('@apollo/subgraph')
